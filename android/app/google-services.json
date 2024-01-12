@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "117513612860",
+    "project_id": "todo-app-af5cf",
+    "storage_bucket": "todo-app-af5cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117513612860:android:07271b36d93b9aacc11d39",
+        "android_client_info": {
+          "package_name": "com.example.referal_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg4K9BdyIqyDFHYFApBQFXrt_Z0ZBU0bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117513612860:android:7c06f8c70d08acb7c11d39",
+        "android_client_info": {
+          "package_name": "com.tariqul.todo_list"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg4K9BdyIqyDFHYFApBQFXrt_Z0ZBU0bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
