@@ -6,21 +6,24 @@ class TodoModel extends Todo {
     String? title,
     String? description,
     bool completed = false,
-    num? timestamp,
+    int? date,
+    int? time,
   }) : super(
           id: id,
           title: title,
           description: description,
           completed: completed,
-          timestamp: timestamp,
+          date: date,
+          time: time,
         );
 
   TodoModel.fromJson(dynamic json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];
-    completed = json['completed'];
-    timestamp = json['timestamp'];
+    completed = json['completed'] == 1;
+    date = json['date'];
+    time = json['time'];
   }
 
   TodoModel copyWith({
@@ -28,14 +31,16 @@ class TodoModel extends Todo {
     String? title,
     String? description,
     bool completed = false,
-    num? timestamp,
+    int? date,
+    int? time,
   }) =>
       TodoModel(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
         completed: completed,
-        timestamp: timestamp ?? this.timestamp,
+        date: date ?? this.date,
+        time: time ?? this.time,
       );
 
   TodoModel.fromObject({
@@ -45,7 +50,8 @@ class TodoModel extends Todo {
     title = todo.title;
     description = todo.description;
     completed = todo.completed;
-    timestamp = todo.timestamp;
+    date = todo.date;
+    time = todo.time;
   }
 
   Map<String, dynamic> toJson() {
@@ -53,8 +59,9 @@ class TodoModel extends Todo {
     map['id'] = id;
     map['title'] = title;
     map['description'] = description;
-    map['completed'] = completed;
-    map['timestamp'] = timestamp;
+    map['completed'] = completed == true ? 1 : 0;
+    map['date'] = date;
+    map['time'] = time;
     return map;
   }
 }

@@ -5,14 +5,16 @@ class Todo extends Equatable {
   String? title;
   String? description;
   bool completed;
-  num? timestamp;
+  int? date;
+  int? time;
 
   Todo({
     this.id,
     this.title,
     this.description,
     this.completed = false,
-    this.timestamp,
+    this.date,
+    this.time,
   });
 
   @override
@@ -21,6 +23,7 @@ class Todo extends Equatable {
         title,
         description,
         completed,
-        timestamp,
+        date,
+        time,
       ];
 }
