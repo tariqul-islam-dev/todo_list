@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list/src/core/utils/helper_functions.dart';
 import 'package:todo_list/src/features/todo/presentation/dialogs/create_todo_dialog.dart';
-import 'package:todo_list/src/features/todo/presentation/dialogs/picker_dialogs.dart';
 
 import '../../bloc/todo_bloc.dart';
 
@@ -47,7 +46,9 @@ class HomePage extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleLarge,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 5,),
+                          const SizedBox(
+                            height: 5,
+                          ),
                           Text(
                             todo.description!,
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -61,8 +62,10 @@ class HomePage extends StatelessWidget {
                           Expanded(
                             child: Row(
                               children: [
-                                Icon(Icons.date_range, size: 14),
-                                SizedBox(width: 2,),
+                                const Icon(Icons.date_range, size: 14),
+                                const SizedBox(
+                                  width: 2,
+                                ),
                                 Text(dateTimeFromMillisecond(todo.date!)),
                               ],
                             ),
@@ -70,8 +73,10 @@ class HomePage extends StatelessWidget {
                           Expanded(
                             child: Row(
                               children: [
-                                Icon(Icons.access_time, size: 14),
-                                SizedBox(width: 2,),
+                                const Icon(Icons.access_time, size: 14),
+                                const SizedBox(
+                                  width: 2,
+                                ),
                                 Text(dateTimeFromMillisecond(todo.time!,
                                     pattern: "hh:mm a")),
                               ],
@@ -79,10 +84,21 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      trailing: Checkbox(
-                        value: todo.completed,
-                        onChanged: (value) {
-
+                      trailing: BlocBuilder<TodoBloc, TodoState>(
+                        buildWhen: (previous, current) => current is MakeTodoCompletedState,
+                        builder: (context, state) {
+                          return Checkbox(
+                            value: todo.completed ,
+                            onChanged: (value) {
+                              context.read<TodoBloc>().add(
+                                    MakeCompletedEvent(
+                                      index: index,
+                                      isCompleted: value ?? false,
+                                      todo: todo,
+                                    ),
+                                  );
+                            },
+                          );
                         },
                       ),
                       onTap: () {},
@@ -100,6 +116,7 @@ class HomePage extends StatelessWidget {
           createTodoDialog(context);
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -17,6 +17,7 @@ abstract class LoadingState extends TodoState {
   LoadingState();
 }
 
+// ========= Main states ==========
 class TodoInitialState extends TodoState {
   TodoInitialState();
 
@@ -33,7 +34,15 @@ class GetTodoState extends TodoState {
   GetTodoState({required List<Todo> todos}) : super(todos: todos);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [todos];
+}
+
+class MakeTodoCompletedState extends GetTodoState {
+  final int index;
+  MakeTodoCompletedState({required this.index, required List<Todo> todos}) : super(todos: todos);
+
+  @override
+  List<Object?> get props => [index, todos];
 }
 
 // ========= Loading states =========

@@ -32,8 +32,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         (success) {
           state.todos = success;
 
-          print(state.todos);
-
           emit(GetTodoState(todos: state.todos ?? []));
         },
       );
@@ -122,5 +120,22 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         );
       }
     });
+
+    on<MakeCompletedEvent>((event, emit) {
+      final Todo todo = event.todo;
+      final int index = event.index;
+      final bool isCompleted = event.isCompleted;
+
+      final List<Todo> todos = List.from(state.todos!);
+      todo.completed = isCompleted;
+      todos[index] = todo;
+      emit(SaveLoadingState(isLoading: true));
+      print("bloc");
+      print(todos[index].completed);
+
+      emit(MakeTodoCompletedState(index: index, todos:  todos));
+    });
   }
+
+
 }

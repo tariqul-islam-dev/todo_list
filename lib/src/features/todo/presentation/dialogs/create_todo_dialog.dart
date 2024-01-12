@@ -108,6 +108,7 @@ createTodoDialog(BuildContext ctx) {
 
                 if (state is SaveTodoState){
                   Navigator.pop(ctx);
+                  ctx.read<TodoBloc>().add(GetTodosEvent());
                 }
 
                 return Row(
