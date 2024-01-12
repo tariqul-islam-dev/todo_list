@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/todo_bloc.dart';
-import 'picker_dialogs.dart';
+import '../widgets/custom_text_field.dart';
+import '../widgets/date_picker_widget.dart';
+import '../widgets/time_picker_widget.dart';
 
 createTodoDialog(BuildContext ctx) {
   String title = "";
@@ -12,7 +14,6 @@ createTodoDialog(BuildContext ctx) {
     context: ctx,
     barrierDismissible: false, // user must tap button!
     builder: (_) {
-
       return BlocProvider.value(
         value: BlocProvider.of<TodoBloc>(ctx),
         child: AlertDialog(
@@ -23,90 +24,39 @@ createTodoDialog(BuildContext ctx) {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  TextField(
-                    onChanged: (value) {
+                  CustomTextField(
+                    onChange: (value) {
                       title = value;
                     },
-                    decoration: const InputDecoration(
-                      labelText: "Title",
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
+                    labelText: "Title",
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  TextField(
-                    onChanged: (value) {
+                  CustomTextField(
+                    hintText: "Description",
+                    maxLines: 3,
+                    onChange: (value) {
                       description = value;
                     },
-                    decoration: const InputDecoration(
-                      hintText: "Description",
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    maxLines: 4,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  BlocBuilder<TodoBloc, TodoState>(
-                    buildWhen: (previous, current) =>
-                        current is DatePickingState,
-                    builder: (ctx, state) {
-                      return ListTile(
-                        onTap: () async {
-                          ctx.read<TodoBloc>().add(
-                                DatePickingEvent(
-                                  dateTime: datePickerDialog(ctx),
-                                ),
-                              );
-                        },
-                        leading: const Icon(Icons.date_range),
-                        title: Text(
-                          state is DatePickingState ? state.date : "Date",
-                        ),
-                      );
-                    },
-                  ),
-                  BlocBuilder<TodoBloc, TodoState>(
-                    buildWhen: (previous, current) =>
-                        current is TimePickingState,
-                    builder: (context, state) {
-                      return ListTile(
-                        onTap: () {
-                          ctx.read<TodoBloc>().add(
-                                TimePickingEvent(
-                                  timeOfDay: timePickerDialog(ctx),
-                                ),
-                              );
-                        },
-                        leading: const Icon(Icons.watch_later),
-                        title: Text(
-                          state is TimePickingState ? state.time : "Time",
-                        ),
-                      );
-                    },
-                  ),
+                  const DatePickerWidget(),
+                  const TimePickerWidget(),
                 ],
               ),
             ),
           ),
           actions: [
-
             BlocBuilder<TodoBloc, TodoState>(
               builder: (context, state) {
-                if (state is SaveLoadingState && state.isLoading == true){
+                if (state is SaveLoadingState && state.isLoading == true) {
                   return const CircularProgressIndicator();
                 }
 
-                if (state is SaveTodoState){
+                if (state is SaveTodoState) {
                   Navigator.pop(ctx);
                   ctx.read<TodoBloc>().add(GetTodosEvent());
                 }
@@ -123,19 +73,17 @@ createTodoDialog(BuildContext ctx) {
                       child: const Text('Save'),
                       onPressed: () {
                         ctx.read<TodoBloc>().add(
-                          SaveTodoEvent(
-                            title: title,
-                            description: description,
-                          ),
-                        );
+                              SaveTodoEvent(
+                                title: title,
+                                description: description,
+                              ),
+                            );
                       },
                     ),
                   ],
                 );
               },
-            )
-
-
+            ),
           ],
         ),
       );

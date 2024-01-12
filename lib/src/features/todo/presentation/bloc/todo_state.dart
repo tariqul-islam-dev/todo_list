@@ -38,11 +38,10 @@ class GetTodoState extends TodoState {
 }
 
 class MakeTodoCompletedState extends GetTodoState {
-  final int index;
-  MakeTodoCompletedState({required this.index, required List<Todo> todos}) : super(todos: todos);
+  MakeTodoCompletedState({required List<Todo> todos}) : super(todos: todos);
 
   @override
-  List<Object?> get props => [index, todos];
+  List<Object?> get props => [todos];
 }
 
 // ========= Loading states =========
