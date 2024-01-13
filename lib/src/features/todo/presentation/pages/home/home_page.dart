@@ -17,6 +17,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Todo App"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<TodoBloc>().add(GetTodosEvent());
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -43,7 +51,6 @@ class HomePage extends StatelessWidget {
           createTodoDialog(context);
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }

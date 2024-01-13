@@ -43,6 +43,32 @@ class SaveTodoEvent extends TodoEvent {
   List<Object?> get props => [title, description];
 }
 
+class UpdateTodoEvent extends TodoEvent {
+  final String title;
+  final String description;
+  final Todo todo;
+
+  const UpdateTodoEvent({
+    required this.title,
+    required this.description,
+    required this.todo,
+  });
+
+  @override
+  List<Object?> get props => [title, description, todo];
+}
+
+class DeleteTodoEvent extends TodoEvent {
+  final Todo todo;
+
+  const DeleteTodoEvent({
+    required this.todo,
+  });
+
+  @override
+  List<Object?> get props => [todo];
+}
+
 // ========== Make completed ========
 class MakeCompletedEvent extends TodoEvent {
   final int index;

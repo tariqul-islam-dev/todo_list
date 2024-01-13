@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list/src/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo_list/src/features/todo/presentation/pages/details/details_page.dart';
 
 import '../../../../../../core/utils/helper_functions.dart';
 import '../../../../domain/entities/todo.dart';
@@ -28,6 +31,7 @@ class TodoListWidget extends StatelessWidget {
                 Text(
                   todo.title!,
                   style: Theme.of(context).textTheme.titleLarge,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(
@@ -36,6 +40,7 @@ class TodoListWidget extends StatelessWidget {
                 Text(
                   todo.description!,
                   style: Theme.of(context).textTheme.bodyMedium,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -70,7 +75,13 @@ class TodoListWidget extends StatelessWidget {
               ],
             ),
             trailing: CompleteCheckBoxWidget(index: index, todo: todo),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                DetailsPage.routeName,
+                arguments: todo
+              );
+            },
           ),
         );
       },

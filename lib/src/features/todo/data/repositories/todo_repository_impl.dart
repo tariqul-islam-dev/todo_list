@@ -22,6 +22,10 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       final localResponse =
           await localDataSource.createTodo(TodoModel.fromObject(todo: todo));
+
+      // final remoteResponse =
+      //     await remoteDataSource.createTodo(TodoModel.fromObject(todo: todo));
+
       return right(localResponse);
     } on CacheException catch (e) {
       return left(CacheFailure(e.message));
@@ -32,6 +36,37 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<Either<Failure, List<Todo>>> getTodos() async {
     try {
       final localResponse = await localDataSource.getTodos();
+      // final remoteResponse = await remoteDataSource.getTodos();
+      return right(localResponse);
+    } on CacheException catch (e) {
+      return left(CacheFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateTodo(Todo todo) async {
+    try {
+      final localResponse =
+          await localDataSource.updateTodo(TodoModel.fromObject(todo: todo));
+
+      // final remoteResponse =
+      //     await remoteDataSource.updateTodo(TodoModel.fromObject(todo: todo));
+
+      return right(localResponse);
+    } on CacheException catch (e) {
+      return left(CacheFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteTodo(Todo todo) async {
+    try {
+      final localResponse =
+          await localDataSource.deleteTodo(TodoModel.fromObject(todo: todo));
+
+      // final remoteResponse =
+      //     await remoteDataSource.deleteTodo(TodoModel.fromObject(todo: todo));
+
       return right(localResponse);
     } on CacheException catch (e) {
       return left(CacheFailure(e.message));

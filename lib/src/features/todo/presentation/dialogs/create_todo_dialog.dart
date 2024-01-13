@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/todo.dart';
 import '../bloc/todo_bloc.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/date_picker_widget.dart';
 import '../widgets/time_picker_widget.dart';
 
-createTodoDialog(BuildContext ctx) {
+createTodoDialog(BuildContext ctx, {Todo? todo}) {
   String title = "";
   String description = "";
 
@@ -17,25 +18,28 @@ createTodoDialog(BuildContext ctx) {
       return BlocProvider.value(
         value: BlocProvider.of<TodoBloc>(ctx),
         child: AlertDialog(
-          title: const Text('Create Todo'),
+          title: Text(todo == null ? 'Create Todo' : 'Edit Todo'),
           content: SizedBox(
             width: MediaQuery.of(ctx).size.width,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  CustomTextField(
+                  CustomTextFormField(
                     onChange: (value) {
                       title = value;
                     },
                     labelText: "Title",
+                    initText: todo?.title,
+                    maxLines: 1,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  CustomTextField(
+                  CustomTextFormField(
                     hintText: "Description",
                     maxLines: 3,
+                    initText: todo?.description,
                     onChange: (value) {
                       description = value;
                     },
@@ -72,12 +76,22 @@ createTodoDialog(BuildContext ctx) {
                     TextButton(
                       child: const Text('Save'),
                       onPressed: () {
-                        ctx.read<TodoBloc>().add(
-                              SaveTodoEvent(
-                                title: title,
-                                description: description,
-                              ),
-                            );
+                        if (todo == null) {
+                          ctx.read<TodoBloc>().add(
+                                SaveTodoEvent(
+                                  title: title,
+                                  description: description,
+                                ),
+                              );
+                        } else {
+                          ctx.read<TodoBloc>().add(
+                                UpdateTodoEvent(
+                                  title: title,
+                                  description: description,
+                                  todo: todo,
+                                ),
+                              );
+                        }
                       },
                     ),
                   ],

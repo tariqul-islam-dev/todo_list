@@ -30,6 +30,11 @@ class SaveTodoState extends TodoState {
   List<Object?> get props => [];
 }
 
+class ModifiedTodoState extends TodoState {
+  @override
+  List<Object?> get props => [];
+}
+
 class GetTodoState extends TodoState {
   GetTodoState({required List<Todo> todos}) : super(todos: todos);
 
