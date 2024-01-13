@@ -5,8 +5,11 @@ import 'package:todo_list/src/core/usecase/usecase.dart';
 import 'package:todo_list/src/core/utils/helper_functions.dart';
 import 'package:todo_list/src/core/utils/widgets.dart';
 import 'package:todo_list/src/features/todo/domain/entities/todo.dart';
+import 'package:todo_list/src/features/todo/domain/usecases/delete_todo.dart';
 import 'package:todo_list/src/features/todo/domain/usecases/get_todos.dart';
+import 'package:todo_list/src/features/todo/domain/usecases/update_todo.dart';
 
+import '../../../../core/params/todo_params.dart';
 import '../../domain/usecases/create_todo.dart';
 
 part 'todo_event.dart';
@@ -15,6 +18,8 @@ part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final CreateTodo createTodo;
+  final UpdateTodo updateTodo;
+  final DeleteTodo deleteTodo;
   final GetTodos getTodos;
 
   int? date;
@@ -22,6 +27,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   TodoBloc({
     required this.createTodo,
+    required this.deleteTodo,
+    required this.updateTodo,
     required this.getTodos,
   }) : super(TodoInitialState()) {
     on<GetTodosEvent>((event, emit) async {
@@ -121,22 +128,34 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }
     });
 
-    on<MakeCompletedEvent>((event, emit) {
+    on<MakeCompletedEvent>((event, emit) async {
       final Todo todo = event.todo;
       final int index = event.index;
       final bool isCompleted = event.isCompleted;
 
       final List<Todo> todos = List.from(state.todos!);
       todo.completed = isCompleted;
-      todos[index] = todo;
 
       emit(SaveLoadingState(isLoading: true));
-      print("bloc");
-      print(todos[index].completed);
 
-      emit(MakeTodoCompletedState(todos:  todos));
+      final newTodo = await updateTodo(Params(todo: todo));
+
+      newTodo.fold(
+        (failure) {
+          showToast(message: failure.message);
+        },
+        (success) {
+          todos[index] = todo;
+
+
+          print("bloc");
+          print(todos[index].completed);
+
+          emit(MakeTodoCompletedState(todos: todos));
+        },
+      );
+
+
     });
   }
-
-
 }

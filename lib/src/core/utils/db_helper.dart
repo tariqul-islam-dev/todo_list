@@ -16,7 +16,7 @@ class DBHelper {
             ${Keys.id} TEXT PRIMARY KEY,
             ${Keys.title} TEXT,
             ${Keys. description} TEXT,
-            ${Keys.completed} TEXT,
+            ${Keys.completed} INTEGER,
             ${Keys.date} INTEGER,
             ${Keys.time} INTEGER
           )

@@ -37,4 +37,26 @@ class TodoRepositoryImpl implements TodoRepository {
       return left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> updateTodo(Todo todo) async {
+    try {
+      final localResponse =
+          await localDataSource.updateTodo(TodoModel.fromObject(todo: todo));
+      return right(localResponse);
+    } on CacheException catch (e) {
+      return left(CacheFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteTodo(Todo todo) async {
+    try {
+      final localResponse =
+          await localDataSource.deleteTodo(TodoModel.fromObject(todo: todo));
+      return right(localResponse);
+    } on CacheException catch (e) {
+      return left(CacheFailure(e.message));
+    }
+  }
 }

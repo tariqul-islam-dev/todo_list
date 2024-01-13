@@ -8,4 +8,6 @@ class Keys{
   static const String completed = "completed";
   static const String date = "date";
   static const String time = "time";
+
+  static const String onboardingKey = "onboardingKey";
 }

@@ -6,6 +6,10 @@ import '../models/todo_model.dart';
 abstract class TodoLocalDataSource {
   Future<bool> createTodo(TodoModel todoModel);
 
+  Future<bool> updateTodo(TodoModel todoModel);
+
+  Future<bool> deleteTodo(TodoModel todoModel);
+
   Future<List<TodoModel>> getTodos();
 }
 
@@ -29,5 +33,19 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
         queryList[index],
       ),
     );
+  }
+
+  @override
+  Future<bool> updateTodo(TodoModel todoModel) async {
+    int count = await db.update(Keys.todoTable, todoModel.toJson(),
+        where: 'id = ?', whereArgs: [todoModel.id]);
+
+    return count != 0;
+  }
+
+  @override
+  Future<bool> deleteTodo(TodoModel todoModel) {
+    // TODO: implement deleteTodo
+    throw UnimplementedError();
   }
 }
